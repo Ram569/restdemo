@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: restdemo
+  name: restdemo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restdemo
+  template:
+    metadata:
+      labels:
+        app: restdemo
+    spec:
+      containers:
+        - image: ramoji/restdemo:0.0.1
+          imagePullPolicy: Always
+          name: restdemo
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: restdemo
+spec:
+  selector:
+    app: restdemo
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+  type: NodePort
